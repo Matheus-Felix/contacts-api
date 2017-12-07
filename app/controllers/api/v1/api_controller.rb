@@ -1,9 +1,11 @@
 module Api::V1
-
  class ApiController < ApplicationController
+   acts_as_token_authenticatable_handler_for User
+   before_action :require_authentication!
 
-   # Métodos globais
-
- end
-
+   private
+     def require_authentication!
+       throw(:warden, scope: :user) unless current_user.presence
+     end
+  end
 end
